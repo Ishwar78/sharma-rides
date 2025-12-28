@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { PageHero } from "@/components/shared/PageHero";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -66,28 +67,13 @@ const Contact = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-block text-gold font-semibold text-sm uppercase tracking-wider mb-3">
-              Get In Touch
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-6">
-              Contact <span className="text-gradient-gold">Us</span>
-            </h1>
-            <p className="text-lg text-primary-foreground/80">
-              Have questions or need to book a car? We're here to help you 24/7.
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
-      </section>
+      {/* Hero Section with Carousel */}
+      <PageHero
+        badge="Get In Touch"
+        title="Contact"
+        titleHighlight="Us"
+        description="Have questions or need to book a car? We're here to help you 24/7."
+      />
 
       {/* Contact Section */}
       <section className="py-20 bg-background">
@@ -110,8 +96,8 @@ const Contact = () => {
                     key={index}
                     className="flex gap-4 p-4 bg-card rounded-xl border border-border"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold to-gold-light flex items-center justify-center shrink-0">
-                      <info.icon className="w-6 h-6 text-navy" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(38,90%,50%)] to-[hsl(38,85%,60%)] flex items-center justify-center shrink-0">
+                      <info.icon className="w-6 h-6 text-[hsl(220,60%,20%)]" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">{info.title}</h3>
@@ -123,7 +109,7 @@ const Contact = () => {
                       {info.action && (
                         <a
                           href={info.action.href}
-                          className="inline-block mt-2 text-gold font-medium text-sm hover:underline"
+                          className="inline-block mt-2 text-[hsl(38,90%,50%)] font-medium text-sm hover:underline"
                         >
                           {info.action.label}
                         </a>
