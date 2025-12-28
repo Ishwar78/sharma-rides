@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Car } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logoImage from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -40,9 +41,13 @@ export const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gold to-gold-light flex items-center justify-center shadow-gold transition-transform group-hover:scale-110">
-              <Car className="w-6 h-6 text-navy" />
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-14 h-10 rounded-lg overflow-hidden shadow-gold transition-transform group-hover:scale-110">
+              <img 
+                src={logoImage} 
+                alt="Sharma Car Rent" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col">
               <span className={cn(
