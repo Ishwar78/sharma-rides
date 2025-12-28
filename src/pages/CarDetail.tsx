@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { cars } from "@/data/cars";
 import { Users, Fuel, Settings, Briefcase, Check, ArrowLeft, Phone } from "lucide-react";
+import { BookingForm } from "@/components/booking/BookingForm";
 
 const CarDetail = () => {
   const { id } = useParams();
   const car = cars.find((c) => c.id === id);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   if (!car) {
     return (
@@ -26,20 +29,17 @@ const CarDetail = () => {
     );
   }
 
-  const whatsappMessage = `Hello Sharma Car Rent, I want to book ${car.name}. Please share availability and pricing.`;
-  const whatsappUrl = `https://wa.me/919053860397?text=${encodeURIComponent(whatsappMessage)}`;
-
   return (
     <Layout>
       {/* Breadcrumb */}
       <section className="pt-28 pb-8 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-gold transition-colors">
+            <Link to="/" className="text-muted-foreground hover:text-[hsl(38,90%,50%)] transition-colors">
               Home
             </Link>
             <span className="text-muted-foreground">/</span>
-            <Link to="/cars" className="text-muted-foreground hover:text-gold transition-colors">
+            <Link to="/cars" className="text-muted-foreground hover:text-[hsl(38,90%,50%)] transition-colors">
               Cars
             </Link>
             <span className="text-muted-foreground">/</span>
@@ -62,7 +62,7 @@ const CarDetail = () => {
                 />
               </div>
               <div className="absolute top-4 left-4">
-                <span className="inline-block bg-gold text-navy text-sm font-semibold px-4 py-2 rounded-full uppercase">
+                <span className="inline-block bg-[hsl(38,90%,50%)] text-[hsl(220,60%,20%)] text-sm font-semibold px-4 py-2 rounded-full uppercase">
                   {car.type}
                 </span>
               </div>
@@ -72,7 +72,7 @@ const CarDetail = () => {
             <div>
               <Link
                 to="/cars"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-gold transition-colors mb-4"
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-[hsl(38,90%,50%)] transition-colors mb-4"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Cars
@@ -89,22 +89,22 @@ const CarDetail = () => {
               {/* Specs */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div className="bg-muted rounded-xl p-4 text-center">
-                  <Users className="w-6 h-6 text-gold mx-auto mb-2" />
+                  <Users className="w-6 h-6 text-[hsl(38,90%,50%)] mx-auto mb-2" />
                   <div className="text-sm text-muted-foreground">Seats</div>
                   <div className="font-semibold text-foreground">{car.seats}</div>
                 </div>
                 <div className="bg-muted rounded-xl p-4 text-center">
-                  <Settings className="w-6 h-6 text-gold mx-auto mb-2" />
+                  <Settings className="w-6 h-6 text-[hsl(38,90%,50%)] mx-auto mb-2" />
                   <div className="text-sm text-muted-foreground">Transmission</div>
                   <div className="font-semibold text-foreground">{car.transmission}</div>
                 </div>
                 <div className="bg-muted rounded-xl p-4 text-center">
-                  <Fuel className="w-6 h-6 text-gold mx-auto mb-2" />
+                  <Fuel className="w-6 h-6 text-[hsl(38,90%,50%)] mx-auto mb-2" />
                   <div className="text-sm text-muted-foreground">Fuel Type</div>
                   <div className="font-semibold text-foreground">{car.fuelType}</div>
                 </div>
                 <div className="bg-muted rounded-xl p-4 text-center">
-                  <Briefcase className="w-6 h-6 text-gold mx-auto mb-2" />
+                  <Briefcase className="w-6 h-6 text-[hsl(38,90%,50%)] mx-auto mb-2" />
                   <div className="text-sm text-muted-foreground">Luggage</div>
                   <div className="font-semibold text-foreground">{car.luggage} Bags</div>
                 </div>
@@ -116,7 +116,7 @@ const CarDetail = () => {
                 <div className="grid grid-cols-2 gap-3">
                   {car.features.map((feature, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-gold shrink-0" />
+                      <Check className="w-5 h-5 text-[hsl(38,90%,50%)] shrink-0" />
                       <span className="text-foreground">{feature}</span>
                     </div>
                   ))}
@@ -129,13 +129,13 @@ const CarDetail = () => {
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <div className="text-muted-foreground text-sm mb-1">Per Day</div>
-                    <div className="text-3xl font-bold text-gold">
+                    <div className="text-3xl font-bold text-[hsl(38,90%,50%)]">
                       ₹{car.pricePerDay.toLocaleString()}
                     </div>
                   </div>
                   <div>
                     <div className="text-muted-foreground text-sm mb-1">Per KM</div>
-                    <div className="text-3xl font-bold text-gold">
+                    <div className="text-3xl font-bold text-[hsl(38,90%,50%)]">
                       ₹{car.pricePerKm}
                     </div>
                   </div>
@@ -144,10 +144,13 @@ const CarDetail = () => {
 
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="gold" size="lg" className="flex-1" asChild>
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                    Book Now on WhatsApp
-                  </a>
+                <Button
+                  variant="gold"
+                  size="lg"
+                  className="flex-1"
+                  onClick={() => setIsBookingOpen(true)}
+                >
+                  Book Now
                 </Button>
                 <Button variant="outline" size="lg" asChild>
                   <a href="tel:9053860397">
@@ -160,6 +163,13 @@ const CarDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Booking Form Modal */}
+      <BookingForm
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+        carName={car.name}
+      />
     </Layout>
   );
 };
