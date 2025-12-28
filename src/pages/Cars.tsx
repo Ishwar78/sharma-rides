@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { CarCard } from "@/components/cars/CarCard";
-import { cars, Car } from "@/data/cars";
+import { cars } from "@/data/cars";
 import { cn } from "@/lib/utils";
+import { PageHero } from "@/components/shared/PageHero";
 
 type CarType = "all" | "sedan" | "suv" | "luxury";
 
@@ -22,28 +23,13 @@ const Cars = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-block text-gold font-semibold text-sm uppercase tracking-wider mb-3">
-              Our Fleet
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-6">
-              Choose Your <span className="text-gradient-gold">Perfect Ride</span>
-            </h1>
-            <p className="text-lg text-primary-foreground/80">
-              From compact sedans to luxury cars, find the perfect vehicle for your journey.
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
-      </section>
+      {/* Hero Section with Carousel */}
+      <PageHero
+        badge="Our Fleet"
+        title="Choose Your"
+        titleHighlight="Perfect Ride"
+        description="From compact sedans to luxury cars, find the perfect vehicle for your journey."
+      />
 
       {/* Filters & Cars */}
       <section className="py-16 bg-background">
@@ -57,7 +43,7 @@ const Cars = () => {
                 className={cn(
                   "px-6 py-3 rounded-full font-medium transition-all duration-300",
                   activeFilter === filter.value
-                    ? "bg-gold text-navy shadow-gold"
+                    ? "bg-[hsl(38,90%,50%)] text-[hsl(220,60%,20%)] shadow-lg"
                     : "bg-muted text-foreground hover:bg-muted/80"
                 )}
               >
