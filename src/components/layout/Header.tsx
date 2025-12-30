@@ -4,6 +4,7 @@ import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logoImage from "@/assets/logo.png";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -89,6 +90,7 @@ export const Header = () => {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-4">
+            <ThemeToggle isScrolled={isScrolled} />
             <a href="tel:9053860397" className="flex items-center gap-2">
               <Phone className={cn(
                 "w-4 h-4",
@@ -153,6 +155,10 @@ export const Header = () => {
               </Link>
             ))}
             <hr className="my-2 border-border" />
+            <div className="flex items-center justify-between px-4 py-2">
+              <span className="text-sm text-muted-foreground">Theme</span>
+              <ThemeToggle isScrolled={true} />
+            </div>
             <a
               href="tel:9053860397"
               className="flex items-center gap-2 px-4 py-3 text-foreground"
