@@ -24,6 +24,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 type Tab = "about" | "cars" | "gallery" | "contact" | "settings";
 
@@ -465,43 +466,83 @@ const AdminDashboard = () => {
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <Input placeholder="Car Name *" value={newCar.name} onChange={(e) => setNewCar({ ...newCar, name: e.target.value })} />
-                    <select
-                      className="h-10 px-3 rounded-lg border border-input bg-background"
-                      value={newCar.type}
-                      onChange={(e) => setNewCar({ ...newCar, type: e.target.value as Car["type"] })}
-                    >
-                      <option value="sedan">Sedan</option>
-                      <option value="suv">SUV</option>
-                      <option value="luxury">Luxury</option>
-                    </select>
-                    <Input type="number" placeholder="Seats" value={newCar.seats} onChange={(e) => setNewCar({ ...newCar, seats: Number(e.target.value) })} />
-                    <Input type="number" placeholder="Price per Day" value={newCar.pricePerDay} onChange={(e) => setNewCar({ ...newCar, pricePerDay: Number(e.target.value) })} />
-                    <Input type="number" placeholder="Price per KM" value={newCar.pricePerKm} onChange={(e) => setNewCar({ ...newCar, pricePerKm: Number(e.target.value) })} />
-                    <Input placeholder="Image URL *" value={newCar.image} onChange={(e) => setNewCar({ ...newCar, image: e.target.value })} />
-                    <select
-                      className="h-10 px-3 rounded-lg border border-input bg-background"
-                      value={newCar.transmission}
-                      onChange={(e) => setNewCar({ ...newCar, transmission: e.target.value })}
-                    >
-                      <option value="Manual">Manual</option>
-                      <option value="Automatic">Automatic</option>
-                    </select>
-                    <select
-                      className="h-10 px-3 rounded-lg border border-input bg-background"
-                      value={newCar.fuelType}
-                      onChange={(e) => setNewCar({ ...newCar, fuelType: e.target.value })}
-                    >
-                      <option value="Petrol">Petrol</option>
-                      <option value="Diesel">Diesel</option>
-                      <option value="Petrol/CNG">Petrol/CNG</option>
-                      <option value="Electric">Electric</option>
-                    </select>
-                    <Input type="number" placeholder="Luggage Capacity" value={newCar.luggage} onChange={(e) => setNewCar({ ...newCar, luggage: Number(e.target.value) })} />
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Car Name *</label>
+                        <Input placeholder="e.g. Toyota Innova Crysta" value={newCar.name} onChange={(e) => setNewCar({ ...newCar, name: e.target.value })} />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Type</label>
+                          <select
+                            className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                            value={newCar.type}
+                            onChange={(e) => setNewCar({ ...newCar, type: e.target.value as Car["type"] })}
+                          >
+                            <option value="sedan">Sedan</option>
+                            <option value="suv">SUV</option>
+                            <option value="luxury">Luxury</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Seats</label>
+                          <Input type="number" placeholder="4" value={newCar.seats} onChange={(e) => setNewCar({ ...newCar, seats: Number(e.target.value) })} />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Price/Day (₹)</label>
+                          <Input type="number" placeholder="3000" value={newCar.pricePerDay} onChange={(e) => setNewCar({ ...newCar, pricePerDay: Number(e.target.value) })} />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Price/KM (₹)</label>
+                          <Input type="number" placeholder="15" value={newCar.pricePerKm} onChange={(e) => setNewCar({ ...newCar, pricePerKm: Number(e.target.value) })} />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Transmission</label>
+                          <select
+                            className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                            value={newCar.transmission}
+                            onChange={(e) => setNewCar({ ...newCar, transmission: e.target.value })}
+                          >
+                            <option value="Manual">Manual</option>
+                            <option value="Automatic">Automatic</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Fuel Type</label>
+                          <select
+                            className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                            value={newCar.fuelType}
+                            onChange={(e) => setNewCar({ ...newCar, fuelType: e.target.value })}
+                          >
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Petrol/CNG">Petrol/CNG</option>
+                            <option value="Electric">Electric</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Luggage Capacity</label>
+                        <Input type="number" placeholder="3" value={newCar.luggage} onChange={(e) => setNewCar({ ...newCar, luggage: Number(e.target.value) })} />
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Car Image *</label>
+                        <ImageUpload
+                          value={newCar.image || ""}
+                          onChange={(value) => setNewCar({ ...newCar, image: value })}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <Textarea className="mt-4" placeholder="Description" value={newCar.description} onChange={(e) => setNewCar({ ...newCar, description: e.target.value })} />
-                  <Input className="mt-4" placeholder="Features (comma separated)" onChange={(e) => setNewCar({ ...newCar, features: e.target.value.split(",").map(f => f.trim()) })} />
+                  <Input className="mt-4" placeholder="Features (comma separated, e.g. AC, GPS, Sunroof)" onChange={(e) => setNewCar({ ...newCar, features: e.target.value.split(",").map(f => f.trim()) })} />
                   <div className="flex gap-2 mt-4">
                     <Button variant="gold" onClick={handleAddCar}>
                       <Save className="w-4 h-4" />
@@ -546,40 +587,78 @@ const AdminDashboard = () => {
                         <X className="w-5 h-5" />
                       </button>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <Input placeholder="Car Name" value={editingCar.name} onChange={(e) => setEditingCar({ ...editingCar, name: e.target.value })} />
-                      <select
-                        className="h-10 px-3 rounded-lg border border-input bg-background"
-                        value={editingCar.type}
-                        onChange={(e) => setEditingCar({ ...editingCar, type: e.target.value as Car["type"] })}
-                      >
-                        <option value="sedan">Sedan</option>
-                        <option value="suv">SUV</option>
-                        <option value="luxury">Luxury</option>
-                      </select>
-                      <Input type="number" placeholder="Seats" value={editingCar.seats} onChange={(e) => setEditingCar({ ...editingCar, seats: Number(e.target.value) })} />
-                      <Input type="number" placeholder="Price per Day" value={editingCar.pricePerDay} onChange={(e) => setEditingCar({ ...editingCar, pricePerDay: Number(e.target.value) })} />
-                      <Input type="number" placeholder="Price per KM" value={editingCar.pricePerKm} onChange={(e) => setEditingCar({ ...editingCar, pricePerKm: Number(e.target.value) })} />
-                      <Input placeholder="Image URL" value={editingCar.image} onChange={(e) => setEditingCar({ ...editingCar, image: e.target.value })} />
-                      <select
-                        className="h-10 px-3 rounded-lg border border-input bg-background"
-                        value={editingCar.transmission}
-                        onChange={(e) => setEditingCar({ ...editingCar, transmission: e.target.value })}
-                      >
-                        <option value="Manual">Manual</option>
-                        <option value="Automatic">Automatic</option>
-                      </select>
-                      <select
-                        className="h-10 px-3 rounded-lg border border-input bg-background"
-                        value={editingCar.fuelType}
-                        onChange={(e) => setEditingCar({ ...editingCar, fuelType: e.target.value })}
-                      >
-                        <option value="Petrol">Petrol</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Petrol/CNG">Petrol/CNG</option>
-                        <option value="Electric">Electric</option>
-                      </select>
-                      <Input type="number" placeholder="Luggage Capacity" value={editingCar.luggage} onChange={(e) => setEditingCar({ ...editingCar, luggage: Number(e.target.value) })} />
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Car Name</label>
+                          <Input placeholder="Car Name" value={editingCar.name} onChange={(e) => setEditingCar({ ...editingCar, name: e.target.value })} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Type</label>
+                            <select
+                              className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                              value={editingCar.type}
+                              onChange={(e) => setEditingCar({ ...editingCar, type: e.target.value as Car["type"] })}
+                            >
+                              <option value="sedan">Sedan</option>
+                              <option value="suv">SUV</option>
+                              <option value="luxury">Luxury</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Seats</label>
+                            <Input type="number" value={editingCar.seats} onChange={(e) => setEditingCar({ ...editingCar, seats: Number(e.target.value) })} />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Price/Day (₹)</label>
+                            <Input type="number" value={editingCar.pricePerDay} onChange={(e) => setEditingCar({ ...editingCar, pricePerDay: Number(e.target.value) })} />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Price/KM (₹)</label>
+                            <Input type="number" value={editingCar.pricePerKm} onChange={(e) => setEditingCar({ ...editingCar, pricePerKm: Number(e.target.value) })} />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Transmission</label>
+                            <select
+                              className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                              value={editingCar.transmission}
+                              onChange={(e) => setEditingCar({ ...editingCar, transmission: e.target.value })}
+                            >
+                              <option value="Manual">Manual</option>
+                              <option value="Automatic">Automatic</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Fuel Type</label>
+                            <select
+                              className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                              value={editingCar.fuelType}
+                              onChange={(e) => setEditingCar({ ...editingCar, fuelType: e.target.value })}
+                            >
+                              <option value="Petrol">Petrol</option>
+                              <option value="Diesel">Diesel</option>
+                              <option value="Petrol/CNG">Petrol/CNG</option>
+                              <option value="Electric">Electric</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Luggage Capacity</label>
+                          <Input type="number" value={editingCar.luggage} onChange={(e) => setEditingCar({ ...editingCar, luggage: Number(e.target.value) })} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Car Image</label>
+                        <ImageUpload
+                          value={editingCar.image}
+                          onChange={(value) => setEditingCar({ ...editingCar, image: value })}
+                        />
+                      </div>
                     </div>
                     <Textarea className="mt-4" placeholder="Description" value={editingCar.description} onChange={(e) => setEditingCar({ ...editingCar, description: e.target.value })} />
                     <Input className="mt-4" placeholder="Features (comma separated)" value={editingCar.features.join(", ")} onChange={(e) => setEditingCar({ ...editingCar, features: e.target.value.split(",").map(f => f.trim()) })} />
@@ -615,22 +694,36 @@ const AdminDashboard = () => {
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <Input placeholder="Image URL *" value={newImage.src} onChange={(e) => setNewImage({ ...newImage, src: e.target.value })} />
-                    <Input placeholder="Image Title *" value={newImage.title} onChange={(e) => setNewImage({ ...newImage, title: e.target.value })} />
-                    <select
-                      className="h-10 px-3 rounded-lg border border-input bg-background"
-                      value={newImage.category}
-                      onChange={(e) => setNewImage({ ...newImage, category: e.target.value })}
-                    >
-                      <option value="SUV">SUV</option>
-                      <option value="Sedan">Sedan</option>
-                      <option value="Hatchback">Hatchback</option>
-                      <option value="Premium">Premium</option>
-                      <option value="Wedding">Wedding</option>
-                    </select>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Image *</label>
+                      <ImageUpload
+                        value={newImage.src}
+                        onChange={(value) => setNewImage({ ...newImage, src: value })}
+                      />
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Image Title *</label>
+                        <Input placeholder="e.g. Toyota Fortuner" value={newImage.title} onChange={(e) => setNewImage({ ...newImage, title: e.target.value })} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Category</label>
+                        <select
+                          className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                          value={newImage.category}
+                          onChange={(e) => setNewImage({ ...newImage, category: e.target.value })}
+                        >
+                          <option value="SUV">SUV</option>
+                          <option value="Sedan">Sedan</option>
+                          <option value="Hatchback">Hatchback</option>
+                          <option value="Premium">Premium</option>
+                          <option value="Wedding">Wedding</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2 mt-6">
                     <Button variant="gold" onClick={handleAddGalleryImage}>
                       <Save className="w-4 h-4" />
                       Add Image
@@ -678,19 +771,31 @@ const AdminDashboard = () => {
                       </button>
                     </div>
                     <div className="space-y-4">
-                      <Input placeholder="Image URL" value={editingImage.src} onChange={(e) => setEditingImage({ ...editingImage, src: e.target.value })} />
-                      <Input placeholder="Title" value={editingImage.title} onChange={(e) => setEditingImage({ ...editingImage, title: e.target.value })} />
-                      <select
-                        className="w-full h-10 px-3 rounded-lg border border-input bg-background"
-                        value={editingImage.category}
-                        onChange={(e) => setEditingImage({ ...editingImage, category: e.target.value })}
-                      >
-                        <option value="SUV">SUV</option>
-                        <option value="Sedan">Sedan</option>
-                        <option value="Hatchback">Hatchback</option>
-                        <option value="Premium">Premium</option>
-                        <option value="Wedding">Wedding</option>
-                      </select>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Image</label>
+                        <ImageUpload
+                          value={editingImage.src}
+                          onChange={(value) => setEditingImage({ ...editingImage, src: value })}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Title</label>
+                        <Input placeholder="Title" value={editingImage.title} onChange={(e) => setEditingImage({ ...editingImage, title: e.target.value })} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Category</label>
+                        <select
+                          className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                          value={editingImage.category}
+                          onChange={(e) => setEditingImage({ ...editingImage, category: e.target.value })}
+                        >
+                          <option value="SUV">SUV</option>
+                          <option value="Sedan">Sedan</option>
+                          <option value="Hatchback">Hatchback</option>
+                          <option value="Premium">Premium</option>
+                          <option value="Wedding">Wedding</option>
+                        </select>
+                      </div>
                     </div>
                     <div className="flex gap-2 mt-6">
                       <Button variant="gold" onClick={handleSaveGalleryImage}>
