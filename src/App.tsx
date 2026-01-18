@@ -10,7 +10,8 @@ import Cars from "./pages/Cars";
 import CarDetail from "./pages/CarDetail";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,7 +30,8 @@ const App = () => (
             <Route path="/cars/:id" element={<CarDetail />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/sharmacar/admin" element={<AdminLogin />} />
+            <Route path="/sharmacar/admin/dashboard" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
