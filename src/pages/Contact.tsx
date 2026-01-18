@@ -6,9 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PageHero } from "@/components/shared/PageHero";
+import { useContactDetails } from "@/hooks/useAdminData";
 
 const Contact = () => {
   const { toast } = useToast();
+  const contactDetails = useContactDetails();
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -44,24 +46,24 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Phone",
-      details: ["+91 9053860397"],
-      action: { href: "tel:9053860397", label: "Call Now" },
+      details: [contactDetails.phone],
+      action: { href: `tel:${contactDetails.phone.replace(/\D/g, '')}`, label: "Call Now" },
     },
     {
       icon: Mail,
       title: "Email",
-      details: ["info@sharmacarrent.com"],
-      action: { href: "mailto:info@sharmacarrent.com", label: "Send Email" },
+      details: [contactDetails.email],
+      action: { href: `mailto:${contactDetails.email}`, label: "Send Email" },
     },
     {
       icon: MapPin,
       title: "Location",
-      details: ["Main Market, Near Bus Stand", "Your City, India"],
+      details: [contactDetails.address1, contactDetails.address2],
     },
     {
       icon: Clock,
       title: "Working Hours",
-      details: ["24/7 Available", "Always ready to serve you"],
+      details: [contactDetails.workingHours, contactDetails.workingDesc],
     },
   ];
 
@@ -129,7 +131,7 @@ const Contact = () => {
                 </p>
                 <Button variant="whatsapp" asChild>
                   <a
-                    href="https://wa.me/919053860397?text=Hello%20Sharma%20Car%20Rent%2C%20I%20want%20to%20book%20a%20car."
+                    href={`https://wa.me/${contactDetails.whatsapp}?text=Hello%20Sharma%20Car%20Rent%2C%20I%20want%20to%20book%20a%20car.`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

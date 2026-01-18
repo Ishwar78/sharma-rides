@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Shield, Award, Users, Clock, ArrowRight, CheckCircle } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
+import { useAboutContent } from "@/hooks/useAdminData";
 
 const values = [
   {
@@ -37,14 +38,16 @@ const achievements = [
 ];
 
 const About = () => {
+  const aboutContent = useAboutContent();
+
   return (
     <Layout>
       {/* Hero Section with Carousel */}
       <PageHero
         badge="About Us"
-        title="Your Trusted Partner for"
-        titleHighlight="Car Rentals"
-        description="Sharma Car Rent is a trusted car rental service providing safe, affordable, and comfortable rides for local and outstation travel."
+        title={aboutContent.heroTitle}
+        titleHighlight={aboutContent.heroHighlight}
+        description={aboutContent.heroDescription}
       />
 
       {/* Story Section */}
@@ -56,19 +59,13 @@ const About = () => {
                 Our Story
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                A Decade of Excellence in Car Rentals
+                {aboutContent.storyTitle}
               </h2>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Founded with a vision to provide hassle-free transportation solutions, 
-                Sharma Car Rent has grown to become one of the most trusted names in 
-                the car rental industry. Our journey began with just a few cars and a 
-                commitment to customer satisfaction.
+                {aboutContent.storyContent1}
               </p>
               <p className="text-muted-foreground mb-8 leading-relaxed">
-                Today, we proudly serve thousands of customers with a fleet of premium 
-                vehicles, ranging from economy sedans to luxury cars. Whether you need 
-                a car for a local trip, outstation journey, wedding, or corporate travel, 
-                we have the perfect solution for you.
+                {aboutContent.storyContent2}
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
@@ -91,21 +88,21 @@ const About = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="bg-primary rounded-2xl p-8 text-center">
-                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">10+</div>
+                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">{aboutContent.stats.years}</div>
                   <div className="text-primary-foreground text-sm">Years Experience</div>
                 </div>
                 <div className="bg-card rounded-2xl p-8 text-center shadow-card border border-border">
-                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">50+</div>
+                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">{aboutContent.stats.vehicles}</div>
                   <div className="text-foreground text-sm">Premium Vehicles</div>
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="bg-card rounded-2xl p-8 text-center shadow-card border border-border">
-                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">10K+</div>
+                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">{aboutContent.stats.customers}</div>
                   <div className="text-foreground text-sm">Happy Customers</div>
                 </div>
                 <div className="bg-primary rounded-2xl p-8 text-center">
-                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">24/7</div>
+                  <div className="text-4xl font-bold text-[hsl(38,90%,50%)] mb-2">{aboutContent.stats.support}</div>
                   <div className="text-primary-foreground text-sm">Customer Support</div>
                 </div>
               </div>
