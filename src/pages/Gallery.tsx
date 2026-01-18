@@ -3,105 +3,15 @@ import { Layout } from "@/components/layout/Layout";
 import { PageHero } from "@/components/shared/PageHero";
 import { X, ZoomIn } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const galleryImages = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&h=600&fit=crop",
-    title: "Toyota Fortuner",
-    category: "SUV"
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&h=600&fit=crop",
-    title: "Honda City",
-    category: "Sedan"
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=800&h=600&fit=crop",
-    title: "Maruti Swift",
-    category: "Hatchback"
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop",
-    title: "Toyota Innova Crysta",
-    category: "SUV"
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1619682817481-e994891cd1f5?w=800&h=600&fit=crop",
-    title: "Hyundai Creta",
-    category: "SUV"
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
-    title: "Premium Sports Car",
-    category: "Premium"
-  },
-  {
-    id: 7,
-    src: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop",
-    title: "Luxury Sedan",
-    category: "Premium"
-  },
-  {
-    id: 8,
-    src: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&h=600&fit=crop",
-    title: "Mercedes Benz",
-    category: "Premium"
-  },
-  {
-    id: 9,
-    src: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&h=600&fit=crop",
-    title: "BMW Series",
-    category: "Premium"
-  },
-  {
-    id: 10,
-    src: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&h=600&fit=crop",
-    title: "Classic Muscle Car",
-    category: "Premium"
-  },
-  {
-    id: 11,
-    src: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=600&fit=crop",
-    title: "Audi A6",
-    category: "Premium"
-  },
-  {
-    id: 12,
-    src: "https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=800&h=600&fit=crop",
-    title: "Range Rover",
-    category: "SUV"
-  },
-  {
-    id: 13,
-    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    title: "Wedding Car",
-    category: "Wedding"
-  },
-  {
-    id: 14,
-    src: "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&h=600&fit=crop",
-    title: "Vintage Classic",
-    category: "Wedding"
-  },
-  {
-    id: 15,
-    src: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=800&h=600&fit=crop",
-    title: "Executive Sedan",
-    category: "Sedan"
-  },
-];
-
-const categories = ["All", "SUV", "Sedan", "Hatchback", "Premium", "Wedding"];
+import { useGallery, GalleryImage } from "@/hooks/useAdminData";
 
 const Gallery = () => {
+  const galleryImages = useGallery();
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [lightboxImage, setLightboxImage] = useState<typeof galleryImages[0] | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
+
+  // Get unique categories from gallery images
+  const categories = ["All", ...Array.from(new Set(galleryImages.map(img => img.category)))];
 
   const filteredImages = selectedCategory === "All" 
     ? galleryImages 
@@ -169,6 +79,15 @@ const Gallery = () => {
               </div>
             ))}
           </div>
+
+          {/* No Images */}
+          {filteredImages.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground text-lg">
+                No images found in this category.
+              </p>
+            </div>
+          )}
 
           {/* CTA */}
           <div className="text-center mt-16">

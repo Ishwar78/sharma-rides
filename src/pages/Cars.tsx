@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { CarCard } from "@/components/cars/CarCard";
-import { cars } from "@/data/cars";
+import { useCars } from "@/hooks/useAdminData";
 import { cn } from "@/lib/utils";
 import { PageHero } from "@/components/shared/PageHero";
 
@@ -16,6 +16,7 @@ const filters: { label: string; value: CarType }[] = [
 
 const Cars = () => {
   const [activeFilter, setActiveFilter] = useState<CarType>("all");
+  const cars = useCars();
 
   const filteredCars = cars.filter(
     (car) => activeFilter === "all" || car.type === activeFilter
