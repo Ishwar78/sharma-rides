@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { cars } from "@/data/cars";
+import { useCars } from "@/hooks/useAdminData";
 import { Users, Fuel, Settings, Briefcase, Check, ArrowLeft, Phone, ArrowRight } from "lucide-react";
 import { BookingForm } from "@/components/booking/BookingForm";
 import { CarCard } from "@/components/cars/CarCard";
 
 const CarDetail = () => {
   const { id } = useParams();
+  const cars = useCars();
   const car = cars.find((c) => c.id === id);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 

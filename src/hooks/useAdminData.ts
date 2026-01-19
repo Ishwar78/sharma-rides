@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { cars as defaultCars, Car } from "@/data/cars";
+import { cars as defaultCars, Car, testimonials as defaultTestimonials } from "@/data/cars";
 
 // Default gallery images
 const defaultGalleryImages = [
@@ -79,6 +79,15 @@ export interface ContactDetails {
   workingDesc: string;
 }
 
+export interface Testimonial {
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  text: string;
+  avatar: string;
+}
+
 export const useCars = () => {
   const [cars, setCars] = useState<Car[]>(defaultCars);
 
@@ -145,4 +154,21 @@ export const useContactDetails = () => {
   }, []);
 
   return contact;
+};
+
+export const useTestimonials = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(defaultTestimonials);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("adminTestimonials");
+    if (saved) {
+      try {
+        setTestimonials(JSON.parse(saved));
+      } catch (e) {
+        console.error("Error parsing testimonials from localStorage:", e);
+      }
+    }
+  }, []);
+
+  return testimonials;
 };

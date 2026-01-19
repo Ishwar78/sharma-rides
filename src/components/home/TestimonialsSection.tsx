@@ -1,7 +1,8 @@
 import { Star, Quote } from "lucide-react";
-import { testimonials } from "@/data/cars";
+import { useTestimonials } from "@/hooks/useAdminData";
 
 export const TestimonialsSection = () => {
+  const testimonials = useTestimonials();
   return (
     <section className="py-24 bg-muted/30 relative overflow-hidden">
       {/* Background Pattern */}
