@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cars as initialCars, Car } from "@/data/cars";
+import { cars as initialCars, Car, testimonials as initialTestimonials } from "@/data/cars";
 import {
   Car as CarIcon,
   Plus,
@@ -20,13 +20,24 @@ import {
   Image,
   Info,
   LogOut,
+  Star,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 
-type Tab = "about" | "cars" | "gallery" | "contact" | "settings";
+type Tab = "about" | "cars" | "gallery" | "testimonials" | "contact" | "settings";
+
+interface Testimonial {
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  text: string;
+  avatar: string;
+}
 
 interface GalleryImage {
   id: number;
@@ -134,6 +145,21 @@ const AdminDashboard = () => {
     return saved ? JSON.parse(saved) : defaultContactDetails;
   });
 
+  // Testimonials State
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => {
+    const saved = localStorage.getItem("adminTestimonials");
+    return saved ? JSON.parse(saved) : initialTestimonials;
+  });
+  const [isAddingTestimonial, setIsAddingTestimonial] = useState(false);
+  const [newTestimonial, setNewTestimonial] = useState<Partial<Testimonial>>({
+    name: "",
+    location: "",
+    rating: 5,
+    text: "",
+    avatar: "",
+  });
+  const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
+
   // Check authentication
   useEffect(() => {
     const isAuth = localStorage.getItem("adminAuth");
@@ -158,6 +184,10 @@ const AdminDashboard = () => {
   useEffect(() => {
     localStorage.setItem("adminContact", JSON.stringify(contactDetails));
   }, [contactDetails]);
+
+  useEffect(() => {
+    localStorage.setItem("adminTestimonials", JSON.stringify(testimonials));
+  }, [testimonials]);
 
   const handleLogout = () => {
     localStorage.removeItem("adminAuth");
@@ -248,10 +278,44 @@ const AdminDashboard = () => {
     toast({ title: "Contact Details Saved", description: "The contact information has been updated." });
   };
 
+  // Testimonial Functions
+  const handleAddTestimonial = () => {
+    if (!newTestimonial.name || !newTestimonial.text) {
+      toast({ title: "Error", description: "Please fill in all required fields.", variant: "destructive" });
+      return;
+    }
+    const testimonial: Testimonial = {
+      id: Date.now(),
+      name: newTestimonial.name || "",
+      location: newTestimonial.location || "",
+      rating: newTestimonial.rating || 5,
+      text: newTestimonial.text || "",
+      avatar: newTestimonial.avatar || newTestimonial.name?.slice(0, 2).toUpperCase() || "NA",
+    };
+    setTestimonials([...testimonials, testimonial]);
+    setIsAddingTestimonial(false);
+    setNewTestimonial({ name: "", location: "", rating: 5, text: "", avatar: "" });
+    toast({ title: "Testimonial Added", description: "The new testimonial has been added." });
+  };
+
+  const handleDeleteTestimonial = (id: number) => {
+    setTestimonials(testimonials.filter((t) => t.id !== id));
+    toast({ title: "Testimonial Deleted", description: "The testimonial has been removed." });
+  };
+
+  const handleSaveTestimonial = () => {
+    if (editingTestimonial) {
+      setTestimonials(testimonials.map((t) => (t.id === editingTestimonial.id ? editingTestimonial : t)));
+      setEditingTestimonial(null);
+      toast({ title: "Testimonial Updated", description: "The testimonial has been saved." });
+    }
+  };
+
   const tabs = [
     { id: "about" as Tab, label: "About Page", icon: Info },
     { id: "cars" as Tab, label: "Manage Cars", icon: CarIcon },
     { id: "gallery" as Tab, label: "Gallery", icon: Image },
+    { id: "testimonials" as Tab, label: "Testimonials", icon: MessageSquare },
     { id: "contact" as Tab, label: "Contact Details", icon: Phone },
     { id: "settings" as Tab, label: "Settings", icon: Settings },
   ];
@@ -810,6 +874,153 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {/* Testimonials Management */}
+          {activeTab === "testimonials" && (
+            <div className="space-y-6">
+              <div className="flex justify-end">
+                <Button variant="gold" onClick={() => setIsAddingTestimonial(true)} disabled={isAddingTestimonial}>
+                  <Plus className="w-4 h-4" />
+                  Add New Testimonial
+                </Button>
+              </div>
+
+              {/* Add Testimonial Form */}
+              {isAddingTestimonial && (
+                <div className="bg-card rounded-xl p-6 border border-border shadow-card">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-semibold">Add New Testimonial</h3>
+                    <button onClick={() => setIsAddingTestimonial(false)} className="p-2 hover:bg-muted rounded-lg">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Customer Name *</label>
+                      <Input placeholder="e.g. Rajesh Kumar" value={newTestimonial.name} onChange={(e) => setNewTestimonial({ ...newTestimonial, name: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Location</label>
+                      <Input placeholder="e.g. Delhi" value={newTestimonial.location} onChange={(e) => setNewTestimonial({ ...newTestimonial, location: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Rating (1-5)</label>
+                      <select
+                        className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                        value={newTestimonial.rating}
+                        onChange={(e) => setNewTestimonial({ ...newTestimonial, rating: Number(e.target.value) })}
+                      >
+                        <option value={5}>5 Stars</option>
+                        <option value={4}>4 Stars</option>
+                        <option value={3}>3 Stars</option>
+                        <option value={2}>2 Stars</option>
+                        <option value={1}>1 Star</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Avatar Initials</label>
+                      <Input placeholder="e.g. RK (auto-generated if empty)" value={newTestimonial.avatar} onChange={(e) => setNewTestimonial({ ...newTestimonial, avatar: e.target.value.toUpperCase().slice(0, 2) })} maxLength={2} />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium mb-2">Review Text *</label>
+                    <Textarea placeholder="Customer review text..." value={newTestimonial.text} onChange={(e) => setNewTestimonial({ ...newTestimonial, text: e.target.value })} />
+                  </div>
+                  <div className="flex gap-2 mt-6">
+                    <Button variant="gold" onClick={handleAddTestimonial}>
+                      <Save className="w-4 h-4" />
+                      Add Testimonial
+                    </Button>
+                    <Button variant="outline" onClick={() => setIsAddingTestimonial(false)}>Cancel</Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Testimonials List */}
+              <div className="grid gap-4">
+                {testimonials.map((testimonial) => (
+                  <div key={testimonial.id} className="bg-card rounded-xl p-4 border border-border shadow-card flex flex-col sm:flex-row items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold to-gold-light flex items-center justify-center text-primary font-bold shrink-0">
+                      {testimonial.avatar}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-foreground">{testimonial.name}</h3>
+                        <span className="text-sm text-muted-foreground">• {testimonial.location}</span>
+                      </div>
+                      <div className="flex gap-0.5 mb-2">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star key={i} className={`w-4 h-4 ${i < testimonial.rating ? "text-gold fill-gold" : "text-muted"}`} />
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground italic">"{testimonial.text}"</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={() => setEditingTestimonial(testimonial)}>
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-destructive hover:text-destructive" onClick={() => handleDeleteTestimonial(testimonial.id)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Edit Testimonial Modal */}
+              {editingTestimonial && (
+                <div className="fixed inset-0 bg-foreground/50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-card rounded-xl p-6 max-w-md w-full shadow-lg">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-lg font-semibold">Edit Testimonial</h3>
+                      <button onClick={() => setEditingTestimonial(null)} className="p-2 hover:bg-muted rounded-lg">
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Customer Name</label>
+                        <Input value={editingTestimonial.name} onChange={(e) => setEditingTestimonial({ ...editingTestimonial, name: e.target.value })} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Location</label>
+                        <Input value={editingTestimonial.location} onChange={(e) => setEditingTestimonial({ ...editingTestimonial, location: e.target.value })} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Rating</label>
+                        <select
+                          className="w-full h-10 px-3 rounded-lg border border-input bg-background"
+                          value={editingTestimonial.rating}
+                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, rating: Number(e.target.value) })}
+                        >
+                          <option value={5}>5 Stars</option>
+                          <option value={4}>4 Stars</option>
+                          <option value={3}>3 Stars</option>
+                          <option value={2}>2 Stars</option>
+                          <option value={1}>1 Star</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Avatar Initials</label>
+                        <Input value={editingTestimonial.avatar} onChange={(e) => setEditingTestimonial({ ...editingTestimonial, avatar: e.target.value.toUpperCase().slice(0, 2) })} maxLength={2} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Review Text</label>
+                        <Textarea value={editingTestimonial.text} onChange={(e) => setEditingTestimonial({ ...editingTestimonial, text: e.target.value })} />
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-6">
+                      <Button variant="gold" onClick={handleSaveTestimonial}>
+                        <Save className="w-4 h-4" />
+                        Save
+                      </Button>
+                      <Button variant="outline" onClick={() => setEditingTestimonial(null)}>Cancel</Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Contact Details Management */}
           {activeTab === "contact" && (
             <div className="bg-card rounded-xl p-6 border border-border shadow-card">
@@ -864,6 +1075,7 @@ const AdminDashboard = () => {
                       localStorage.removeItem("adminGallery");
                       localStorage.removeItem("adminAbout");
                       localStorage.removeItem("adminContact");
+                      localStorage.removeItem("adminTestimonials");
                       window.location.reload();
                     }}
                   >
