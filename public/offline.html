@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Sharma Car Rent</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f8fafc;
+      padding: 20px;
+    }
+    
+    .container {
+      text-align: center;
+      max-width: 500px;
+    }
+    
+    .icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, #d4a00a 0%, #f5c842 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+    
+    .icon svg {
+      width: 60px;
+      height: 60px;
+      fill: #0f172a;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #d4a00a;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    
+    .contact-info {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(212, 160, 10, 0.2);
+    }
+    
+    .contact-info h3 {
+      color: #d4a00a;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+      color: #e2e8f0;
+    }
+    
+    .contact-item svg {
+      width: 20px;
+      height: 20px;
+      fill: #d4a00a;
+    }
+    
+    .contact-item a {
+      color: #e2e8f0;
+      text-decoration: none;
+    }
+    
+    .retry-btn {
+      background: linear-gradient(135deg, #d4a00a 0%, #f5c842 100%);
+      color: #0f172a;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .retry-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 160, 10, 0.3);
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    .feature {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .feature h4 {
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .feature p {
+      color: #64748b;
+      font-size: 0.8rem;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+    </div>
+    
+    <h1>You're Offline</h1>
+    <p>Don't worry! You can still reach us directly to book your ride.</p>
+    
+    <div class="contact-info">
+      <h3>📞 Contact Us Directly</h3>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <a href="tel:9053860397">905-386-0397</a>
+      </div>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.612l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        <a href="https://wa.me/919053860397">WhatsApp Us</a>
+      </div>
+    </div>
+    
+    <button class="retry-btn" onclick="window.location.reload()">
+      Try Again
+    </button>
+    
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🚗</div>
+        <h4>Premium Fleet</h4>
+        <p>Well-maintained vehicles</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <h4>Best Rates</h4>
+        <p>Competitive pricing</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🛡️</div>
+        <h4>Safe & Reliable</h4>
+        <p>Trusted service</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⏰</div>
+        <h4>24/7 Support</h4>
+        <p>Always available</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
