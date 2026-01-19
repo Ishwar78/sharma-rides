@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Download } from "lucide-react";
+import { Menu, X, Phone, Download, Bell, BellRing } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logoImage from "@/assets/logo.png";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -20,6 +21,7 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { isInstallable, installApp } = usePWAInstall();
+  const { isSupported, isSubscribed, requestPermission } = usePushNotifications();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,6 +95,28 @@ export const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-4">
             <ThemeToggle isScrolled={isScrolled} />
+            {isSupported && !isSubscribed && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={requestPermission}
+                className={cn(
+                  "relative",
+                  isScrolled ? "text-foreground hover:text-gold" : "text-primary-foreground hover:text-gold"
+                )}
+                title="Enable notifications"
+              >
+                <Bell className="w-5 h-5" />
+              </Button>
+            )}
+            {isSubscribed && (
+              <div className={cn(
+                "p-2",
+                isScrolled ? "text-gold" : "text-gold"
+              )} title="Notifications enabled">
+                <BellRing className="w-5 h-5" />
+              </div>
+            )}
             {isInstallable && (
               <Button
                 variant="outline"
@@ -177,6 +201,16 @@ export const Header = () => {
               <span className="text-sm text-muted-foreground">Theme</span>
               <ThemeToggle isScrolled={true} />
             </div>
+            {isSupported && !isSubscribed && (
+              <Button
+                variant="outline"
+                onClick={requestPermission}
+                className="gap-2 border-gold text-gold hover:bg-gold hover:text-primary"
+              >
+                <Bell className="w-4 h-4" />
+                Enable Notifications
+              </Button>
+            )}
             {isInstallable && (
               <Button
                 variant="outline"
