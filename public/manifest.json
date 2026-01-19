@@ -1,0 +1,26 @@
+{
+  "name": "Sharma Car Rent",
+  "short_name": "Sharma Cars",
+  "description": "Your trusted partner for car rentals - safe, affordable, and comfortable rides",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#d4a00a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "transportation", "business"],
+  "lang": "en"
+}
