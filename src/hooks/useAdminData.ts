@@ -129,7 +129,16 @@ export const useAboutContent = () => {
     const saved = localStorage.getItem("adminAbout");
     if (saved) {
       try {
-        setAbout(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Merge with defaults to ensure all fields exist (including stats)
+        setAbout({
+          ...defaultAboutContent,
+          ...parsed,
+          stats: {
+            ...defaultAboutContent.stats,
+            ...(parsed.stats || {})
+          }
+        });
       } catch (e) {
         console.error("Error parsing about content from localStorage:", e);
       }
