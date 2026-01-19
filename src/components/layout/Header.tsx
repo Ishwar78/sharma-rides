@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logoImage from "@/assets/logo.png";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -18,6 +19,7 @@ export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isInstallable, installApp } = usePWAInstall();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,6 +93,22 @@ export const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-4">
             <ThemeToggle isScrolled={isScrolled} />
+            {isInstallable && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={installApp}
+                className={cn(
+                  "gap-2",
+                  isScrolled 
+                    ? "border-gold text-gold hover:bg-gold hover:text-primary" 
+                    : "border-gold text-gold hover:bg-gold hover:text-primary"
+                )}
+              >
+                <Download className="w-4 h-4" />
+                Install App
+              </Button>
+            )}
             <a href="tel:9053860397" className="flex items-center gap-2">
               <Phone className={cn(
                 "w-4 h-4",
@@ -159,6 +177,16 @@ export const Header = () => {
               <span className="text-sm text-muted-foreground">Theme</span>
               <ThemeToggle isScrolled={true} />
             </div>
+            {isInstallable && (
+              <Button
+                variant="outline"
+                onClick={installApp}
+                className="gap-2 border-gold text-gold hover:bg-gold hover:text-primary"
+              >
+                <Download className="w-4 h-4" />
+                Install App
+              </Button>
+            )}
             <a
               href="tel:9053860397"
               className="flex items-center gap-2 px-4 py-3 text-foreground"
