@@ -89,17 +89,49 @@ export interface Testimonial {
 }
 
 export const useCars = () => {
-  const [cars, setCars] = useState<Car[]>(defaultCars);
-
-  useEffect(() => {
+  const [cars, setCars] = useState<Car[]>(() => {
     const saved = localStorage.getItem("adminCars");
     if (saved) {
       try {
-        setCars(JSON.parse(saved));
+        return JSON.parse(saved);
       } catch (e) {
         console.error("Error parsing cars from localStorage:", e);
       }
     }
+    return defaultCars;
+  });
+
+  useEffect(() => {
+    // Listen for storage changes (when admin updates from another tab or same window)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "adminCars" && e.newValue) {
+        try {
+          setCars(JSON.parse(e.newValue));
+        } catch (err) {
+          console.error("Error parsing cars from storage event:", err);
+        }
+      }
+    };
+
+    // Custom event listener for same-window updates
+    const handleCustomUpdate = () => {
+      const saved = localStorage.getItem("adminCars");
+      if (saved) {
+        try {
+          setCars(JSON.parse(saved));
+        } catch (err) {
+          console.error("Error parsing cars:", err);
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("adminCarsUpdated", handleCustomUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("adminCarsUpdated", handleCustomUpdate);
+    };
   }, []);
 
   return cars;
