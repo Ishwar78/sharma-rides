@@ -168,9 +168,11 @@ const AdminDashboard = () => {
     }
   }, [navigate]);
 
-  // Save to localStorage when data changes
+  // Save to localStorage when data changes and notify other components
   useEffect(() => {
     localStorage.setItem("adminCars", JSON.stringify(cars));
+    // Dispatch custom event to notify same-window components
+    window.dispatchEvent(new CustomEvent("adminCarsUpdated"));
   }, [cars]);
 
   useEffect(() => {

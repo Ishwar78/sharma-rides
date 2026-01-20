@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { CalendarIcon, Car } from "lucide-react";
+import { CalendarIcon, Car, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { savePendingBooking, checkAndSync } from "@/lib/offlineBooking";
 
 const bookingSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -39,6 +40,29 @@ export const BookingForm = ({ isOpen, onClose, carName }: BookingFormProps) => {
   const [pickupDate, setPickupDate] = useState<Date>();
   const [dropDate, setDropDate] = useState<Date>();
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  // Check online status and sync pending bookings
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      checkAndSync();
+    };
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Try to sync on mount if online
+    if (navigator.onLine) {
+      checkAndSync();
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,6 +103,32 @@ export const BookingForm = ({ isOpen, onClose, carName }: BookingFormProps) => {
       return;
     }
 
+    const formattedPickupDate = format(pickupDate, "dd MMM yyyy");
+    const formattedDropDate = format(dropDate, "dd MMM yyyy");
+
+    // If offline, save booking for later sync
+    if (!navigator.onLine) {
+      savePendingBooking({
+        carName,
+        name: formData.name,
+        mobile: formData.mobile,
+        pickupDate: formattedPickupDate,
+        dropDate: formattedDropDate,
+      });
+
+      toast({
+        title: "Booking Saved Offline",
+        description: "Your booking will be sent via WhatsApp when you're back online.",
+      });
+
+      setFormData({ name: "", mobile: "" });
+      setPickupDate(undefined);
+      setDropDate(undefined);
+      setErrors({});
+      onClose();
+      return;
+    }
+
     const message = `Hello Sharma Car Rent,
 
 I want to book a car with the following details:
@@ -86,8 +136,8 @@ I want to book a car with the following details:
 *Car:* ${carName}
 *Name:* ${formData.name}
 *Mobile:* ${formData.mobile}
-*Pickup Date:* ${format(pickupDate, "dd MMM yyyy")}
-*Drop Date:* ${format(dropDate, "dd MMM yyyy")}
+*Pickup Date:* ${formattedPickupDate}
+*Drop Date:* ${formattedDropDate}
 
 Please confirm availability and pricing.`;
 
@@ -124,6 +174,12 @@ Please confirm availability and pricing.`;
             <p className="text-primary-foreground/80 text-sm mt-2">
               {carName}
             </p>
+            {!isOnline && (
+              <div className="flex items-center gap-2 mt-2 text-amber-300 text-xs">
+                <WifiOff className="w-4 h-4" />
+                <span>Offline - Booking will sync when online</span>
+              </div>
+            )}
           </DialogHeader>
         </div>
 
